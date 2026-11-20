@@ -1,0 +1,16 @@
+.gcloudignore
+.git
+.gitignore
+.dockerignore
+.env
+.env.*
+backend/.venv/
+.venv/
+frontend/node_modules/
+frontend/dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+Thumbs.db
+run.sh
