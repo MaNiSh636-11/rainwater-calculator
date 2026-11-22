@@ -94,6 +94,22 @@ class CalculationRequest(BaseModel):
         description="Optional list of 12 monthly rainfall figures in mm (January to December)."
     )
 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "project_name": "Urban Residential Rainwater Harvest",
+                "location": "Bangalore",
+                "roof_area": 150.0,
+                "annual_rainfall": 950.0,
+                "collection_efficiency": 85.0,
+                "daily_water_demand": 350.0,
+                "tank_capacity": 5000.0,
+                "water_cost_per_m3": 2.85,
+                "monthly_rainfall": [45, 50, 65, 70, 95, 140, 160, 130, 85, 55, 35, 20]
+            }
+        }
+    }
+
     @model_validator(mode="before")
     @classmethod
     def reconcile_legacy_and_standard_fields(cls, data: Any) -> Any:
@@ -166,6 +182,8 @@ class CalculationRequest(BaseModel):
     @classmethod
     def validate_monthly_rainfall(cls, v: Optional[List[float]]) -> Optional[List[float]]:
         if v is not None:
+            if len(v) == 0:
+                return None
             if len(v) != 12:
                 raise ValueError("monthly_rainfall must contain exactly 12 monthly values.")
             for val in v:
